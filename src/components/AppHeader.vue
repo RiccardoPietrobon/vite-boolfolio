@@ -7,7 +7,7 @@ export default {
 <template>
     <nav class="navbar bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand h1">Miei Progetti</a>
+            <a class="navbar-brand h1">{{ title }}</a>
         </div>
     </nav>
 </template>
