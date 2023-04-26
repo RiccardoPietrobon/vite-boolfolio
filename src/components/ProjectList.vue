@@ -1,35 +1,54 @@
 <script>
-
+import axios from 'axios'; //importo axios
 import ProjectCard from './ProjectCard.vue';
-
+import AppPagination from './AppPagination.vue';
 
 export default {
+
+    data() {
+        return {
+            projects: {
+                list: [],//lista progetti
+                pages: [],//paginazione
+            },
+        }
+    },
+
     props: {
-        projects: Array,
-        pages: Array,
         title: String,
     },
 
-    components: { ProjectCard },
+    components: { ProjectCard, AppPagination },
+
+    emits: ['changePage'],
+
+    methods: {
+        fetchProjects(endpoint = null) {
+
+            if (!endpoint) endpoint = 'http://127.0.0.1:8000/api/projects'
+
+            axios.get(endpoint).then((response) => {
+                this.projects.list = response.data.data;//2 volte data per il paginate
+                this.projects.pages = response.data.links;//risposta paginazione
+            })
+        }
+    },
+
+    created() {
+        this.fetchProjects();
+    },
 }
 </script>
 
 <template>
-    <div class="container">
+    <div>
         <h1 class="my-2">{{ title }}</h1>
-        <div v-if="projects.length" class="row g-3">
-            <ProjectCard v-for="project in projects" :key="project.id" :project="project" class="col-md-4 d-flex" />
+        <div v-if="projects.list.length" class="row g-3">
+            <ProjectCard v-for="project in projects.list" :key="project.id" :project="project" class="col-md-4 d-flex" />
         </div>
         <h2 v-else class="text-muted">Non ci sono progetti</h2>
 
-        <nav aria-label="Page navigation example">
-            <ul class="pagination my-2">
-                <li v-for="page in pages" class="page-item">
-                    <button type="button" class="page-link" @click="$emit('changePage', page.url)"
-                        :class="{ disabled: !page.url, active: page.active, }" v-html="page.label"></button>
-                </li>
-            </ul>
-        </nav>
+        <AppPagination :pages="projects.pages" @changePage="fetchProjects" />
     </div>
 </template>
 

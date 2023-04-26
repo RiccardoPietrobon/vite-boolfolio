@@ -1,17 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 //importo le pagine
-import Homepage from '../pages/Homepage.vue';
+import HomePage from '../pages/HomePage.vue';
 import ContactPage from '../pages/ContactPage.vue';
 
 //creazione route
 const router = createRouter({
     history: createWebHistory(),
+    linkActiveClass: 'active', //adatto per bootstrap
+    linkExactActiveClass: '', //adatto per bootstrap
     routes: [
         {
             path: '/',
             name: 'home',
-            component: Homepage,
+            component: HomePage,
         },
         {
             path: '/contacts',

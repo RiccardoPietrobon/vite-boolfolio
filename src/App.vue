@@ -17,7 +17,9 @@ export default {
 
 <template>
   <AppHeader :title="title" /> <!-- aggiungo nel template AppHeader -->
-  <router-view></router-view> <!-- aggiungo il router -->
+  <div class="container">
+    <router-view></router-view> <!-- aggiungo il router -->
+  </div>
 </template>
 
 <style lang="scss" scoped></style>
