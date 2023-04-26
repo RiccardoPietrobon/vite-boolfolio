@@ -1,5 +1,5 @@
 <script>
-
+import AppHeader from './components/AppHeader.vue';
 
 export default {
 
@@ -9,13 +9,12 @@ export default {
     }
   },
 
-  components: {
-
-  }
+  components: { AppHeader },
 }
 </script>
 
 <template>
+  <AppHeader />
   <h1>{{ title }}</h1>
 </template>
 
