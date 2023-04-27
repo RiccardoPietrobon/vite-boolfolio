@@ -17,14 +17,24 @@ export default {
 <template>
     <div>
         <div class="card">
-            <img src="{{ project.image }}" class="card-img-top" alt="...">
-            <div class="card-body">
+            <img :src="project.image" class="card-img-top" alt="...">
+            <div class="card-header d-flex justify-content-between align-items-start">
                 <h5 class="card-title">{{ project.title }}</h5>
-                <p class="card-text">{{ isDetail ? project.text : abstract }}</p>
+                <span v-if="project.type" class="badge" :style="{ backgroundColor: project.type.color }">{{
+                    project.type.label }}</span>
             </div>
-            <div class="card-footer">
+            <div class="card-body">
+                <p class="card-text">{{ isDetail ? project.text : abstract }}</p>
+
+                <div v-if="project.technologies.length">
+                    <hr>
+                    <span v-for="technology in project.technologies" :key="technology.id" class="badge rounded-pill mx-2"
+                        :style="{ backgroundColor: technology.color }">{{ technology.label }}</span>
+                </div>
+            </div>
+            <div class="card-footer"><!-- con v-if alterno se la card è nel dettaglio oppure no -->
                 <router-link v-if="!isDetail" :to="{ name: 'project-detail', params: { slug: project.slug } }"
-                    class="btn btn-primary btn-sm">Dettaglio</router-link>
+                    class="btn btn-primary btn-sm">Dettaglio</router-link> <!-- faccio passare lo slug -->
             </div>
         </div>
     </div>
