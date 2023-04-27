@@ -7,6 +7,8 @@ export default {
 
     data() {
         return {
+            error: false,
+            isLoading: false,
             projects: {
                 list: [],//lista progetti
                 pages: [],//paginazione
@@ -25,13 +27,23 @@ export default {
     methods: {
         fetchProjects(endpoint = null) {
 
+            this.isLoading = true;
+
             if (!endpoint) endpoint = 'http://127.0.0.1:8000/api/projects'
 
-            axios.get(endpoint).then((response) => {
-                this.projects.list = response.data.data;//2 volte data per il paginate
-                this.projects.pages = response.data.links;//risposta paginazione
-            })
-        }
+            axios
+                .get(endpoint)
+                .then((response) => {
+                    this.projects.list = response.data.data;//2 volte data per il paginate
+                    this.projects.pages = response.data.links;//risposta paginazione
+                })
+                .catch((err) => {
+                    this.error = err.message;
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                })
+        },
     },
 
     created() {
@@ -43,7 +55,9 @@ export default {
 <template>
     <div>
         <h1 class="my-2">{{ title }}</h1>
-        <div v-if="projects.list.length" class="row g-3">
+        <AppLoader v-if="isLoading" />
+        <div v-if="error" class="alert alert-danger" role="alert">{{ error }}</div>
+        <div v-else-if="projects.list.length" class="row g-3">
             <ProjectCard v-for="project in projects.list" :key="project.id" :project="project" :isDetail="false"
                 class="col-md-4 d-flex" />
         </div>
