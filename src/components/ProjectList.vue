@@ -44,7 +44,8 @@ export default {
     <div>
         <h1 class="my-2">{{ title }}</h1>
         <div v-if="projects.list.length" class="row g-3">
-            <ProjectCard v-for="project in projects.list" :key="project.id" :project="project" class="col-md-4 d-flex" />
+            <ProjectCard v-for="project in projects.list" :key="project.id" :project="project" :isDetail="false"
+                class="col-md-4 d-flex" />
         </div>
         <h2 v-else class="text-muted">Non ci sono progetti</h2>
 

@@ -1,12 +1,7 @@
 <script>
 import ProjectList from '../components/ProjectList.vue'; //importo ProjectList
 export default {
-
-
-
     components: { ProjectList },
-
-
 }
 </script>
 
