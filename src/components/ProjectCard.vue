@@ -16,8 +16,8 @@ export default {
 
 <template>
     <div>
-        <div class="card">
-            <img :src="project.image" class="card-img-top" alt="...">
+        <div class="card w-100">
+            <img :src="project.image" class="card-img-top {{ isDetail ? w-25 }}" :alt="project.slug">
             <div class="card-header d-flex justify-content-between align-items-start">
                 <h5 class="card-title">{{ project.title }}</h5>
                 <span v-if="project.type" class="badge" :style="{ backgroundColor: project.type.color }">{{
