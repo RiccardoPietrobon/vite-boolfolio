@@ -1,5 +1,7 @@
 <script>
 import ProjectCard from '../components/ProjectCard.vue'; //importo ProjectCard
+import CommentList from '../components/CommentList.vue'; //importo CommentList
+
 import axios from 'axios';
 
 
@@ -14,7 +16,7 @@ export default {
         }
     },
 
-    components: { ProjectCard },
+    components: { ProjectCard, CommentList },
 
     created() {
 
@@ -39,7 +41,8 @@ export default {
 <template>
     <h1>Progetto n° {{ project?.id }}</h1>
     <AppLoader v-if="isLoading" />
-    <ProjectCard v-if="project" :project="project" :isDetail="true" />
+    <ProjectCard v-if="project" :project="project" :isDetail="true" /> <!-- if fa un controllo perchè all'inizio è nullo -->
+    <CommentList v-if="project" :project_id="project.id" />
 </template>
 
 <style lang="scss" scoped></style>

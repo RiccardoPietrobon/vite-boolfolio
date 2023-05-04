@@ -13,11 +13,12 @@ export default {
                 list: [],//lista progetti
                 pages: [],//paginazione
             },
+            type: null,
         }
     },
 
     props: {
-        title: String,
+        type: String,
     },
 
     components: { ProjectCard, AppPagination },
@@ -29,13 +30,14 @@ export default {
 
             this.isLoading = true;
 
-            if (!endpoint) endpoint = 'http://127.0.0.1:8000/api/projects'
+            if (!endpoint) endpoint = this.baseEndpoint;
 
             axios
                 .get(endpoint)
                 .then((response) => {
-                    this.projects.list = response.data.data;//2 volte data per il paginate
-                    this.projects.pages = response.data.links;//risposta paginazione
+                    this.projects.list = response.data.projects.data;//2 volte data per il paginate
+                    this.projects.pages = response.data.projects.links;//risposta paginazione
+                    if (response.data.type) this.type = response.data.type;
                 })
                 .catch((err) => {
                     this.error = err.message;
@@ -44,6 +46,21 @@ export default {
                     this.isLoading = false;
                 })
         },
+    },
+
+    computed: {
+        title() { //in base al type avrò una visualizzazione diversa
+            if (this.type == 'most-recent') return 'Progetti più recenti';
+            if (this.type == 'at-type') return this.type ? 'Progetti di tipo ' + this.type.label : 'Progetti filtrati';
+            return 'Lista Progetti'
+        },
+
+        baseEndpoint() {
+            if (this.type == 'most-recent') return 'http://127.0.0.1:8000/api/projects';
+            if (this.type == 'by-type') return 'http://127.0.0.1:8000/api/type/' + this.$route.params.type_id + '/projects';
+
+            return 'http://127.0.0.1:8000/api/projects';
+        }
     },
 
     created() {
